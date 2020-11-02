@@ -1,0 +1,26 @@
+﻿<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
+  <div class="navbar-nav">
+    <a class="nav-item nav-link" routerLink="/" routerLinkActive="active"
+       [routerLinkActiveOptions]="{exact: true}">Strona główna</a>
+    <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Użytkownicy</a>
+    <a class="nav-item nav-link" (click)="logout()">Wyloguj</a>
+  </div>
+</nav>
+
+<!-- main app container -->
+<div class="app-container" [ngClass]="{ 'bg-light': user }">
+  <alert></alert>
+  <router-outlet></router-outlet>
+</div>
+
+<!-- credits -->
+<div class="text-center mt-4">
+  <p>
+    AnkietApp - wypełniaj ankiety twojego uniwersytetu!
+  </p>
+  <p>Konrad Wenc</p>
+  <p>Michał Sochacki</p>
+  <p>Kamil Złotek</p>
+  <p>Mateusz Wojtoń</p>
+</div>
