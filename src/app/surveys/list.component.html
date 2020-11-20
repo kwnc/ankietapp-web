@@ -1,5 +1,5 @@
 ﻿<h1>Ankiety</h1>
-<a routerLink="add"><button mat-raised-button color="primary">Dodaj ankietę</button></a>
+<a routerLink="create"><button mat-raised-button color="primary">Dodaj ankietę</button></a>
 <div fxLayout="row">
   <mat-card class="survey" *ngFor="let survey of surveys" fxFlex.lg="10" fxFlex.lt-lg="25" fxFlex.xs="50">
     <mat-card-header class="mat-typography">
@@ -12,7 +12,7 @@
       <p>{{survey.description}}</p>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button>WYPEŁNIJ</button>
+      <a routerLink="fill/{{survey.id}}"><button mat-raised-button color="accent">WYPEŁNIJ</button></a>
     </mat-card-actions>
   </mat-card>
 </div>
