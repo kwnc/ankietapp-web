@@ -4,12 +4,11 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 
 import {AccountService, AlertService} from '@app/services';
+import {SurveyService} from '../services/survey.service';
 
 @Component({templateUrl: 'create.component.html'})
 export class CreateComponent implements OnInit {
   form: FormGroup;
-  id: string;
-  isAddMode: boolean;
   loading = false;
   submitted = false;
 
@@ -17,38 +16,21 @@ export class CreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService,
+    private surveyService: SurveyService,
     private alertService: AlertService
   ) {
   }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.params['id'];
-    this.isAddMode = !this.id;
-
-    // password not required in edit mode
-    const passwordValidators = [Validators.minLength(6)];
-    if (this.isAddMode) {
-      passwordValidators.push(Validators.required);
-    }
-
-    this.form = this.formBuilder.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', passwordValidators]
-    });
-
-    if (!this.isAddMode) {
-      this.accountService.getById(this.id)
-        .pipe(first())
-        .subscribe(x => this.form.patchValue(x));
-    }
-  }
-
   // convenience getter for easy access to form fields
-  get f() {
-    return this.form.controls;
+  // tslint:disable-next-line:typedef
+  get f() { return this.form.controls; }
+
+  ngOnInit() {
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      dueDate: ['', Validators.required]
+    });
   }
 
   onSubmit() {
@@ -63,35 +45,12 @@ export class CreateComponent implements OnInit {
     }
 
     this.loading = true;
-    if (this.isAddMode) {
-      this.createUser();
-    } else {
-      this.updateUser();
-    }
-  }
 
-  private createUser() {
-    this.accountService.register(this.form.value)
-      .pipe(first())
+    this.surveyService.create(this.f.name.value, this.f.description.value, this.f.dueDate.value)
       .subscribe({
         next: () => {
-          this.alertService.success('User added successfully', {keepAfterRouteChange: true});
-          this.router.navigate(['../'], {relativeTo: this.route});
-        },
-        error: error => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      });
-  }
-
-  private updateUser() {
-    this.accountService.update(this.id, this.form.value)
-      .pipe(first())
-      .subscribe({
-        next: () => {
-          this.alertService.success('Update successful', {keepAfterRouteChange: true});
-          this.router.navigate(['../../'], {relativeTo: this.route});
+          const returnUrl = '/';
+          this.router.navigateByUrl(returnUrl);
         },
         error: error => {
           this.alertService.error(error);
