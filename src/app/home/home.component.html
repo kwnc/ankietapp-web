@@ -1,9 +1,37 @@
 ﻿<div class="p-4">
   <div class="container">
     <h1>Witaj {{user.firstName}}!</h1>
-    <p>Dostępna lista ankiet:</p>
+    <p>Jak ci mija dzień?</p>
 
-    <app-survey-list></app-survey-list>
+    <div fxLayout="row">
+      <a routerLink="/surveys" routerLinkActive="active">
+        <mat-card fxFlex.lg="10" fxFlex.lt-lg="25" fxFlex.xs="50">
+          <mat-card-header class="mat-typography">
+            <mat-card-title>
+              <div class="mat-title">Ankiety</div>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="assets/img/survey-default.png" alt="Domyślne zdjęcie ankiety">
+          <mat-card-content>
+            <p>Wypełniaj ankiety naszego uniwersytetu!</p>
+          </mat-card-content>
+        </mat-card>
+      </a>
+
+      <a routerLink="/users" routerLinkActive="active">
+        <mat-card fxFlex.lg="5" fxFlex.lt-lg="5" fxFlex.xs="5">
+          <mat-card-header class="mat-typography">
+            <mat-card-title>
+              <div class="mat-title">Użytkownicy</div>
+            </mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="assets/img/user_manage.jpg" alt="Zarządzanie użytkownikami">
+          <mat-card-content>
+            <p>Dodawaj i zarządzaj użytkownikami naszej aplikacji!</p>
+          </mat-card-content>
+        </mat-card>
+      </a>
+    </div>
 
   </div>
 </div>
