@@ -5,9 +5,10 @@ import {CommonModule} from '@angular/common';
 import {SurveysRoutingModule} from './surveys-routing.module';
 import {LayoutComponent} from './layout.component';
 import {ListComponent} from './list.component';
-import {AddEditComponent} from './add-edit.component';
+import {CreateComponent} from './create.component';
 import {MaterialModule} from '../material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { FillComponent } from './fill.component';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
   declarations: [
     LayoutComponent,
     ListComponent,
-    AddEditComponent
+    CreateComponent,
+    FillComponent
   ]
 })
 export class SurveysModule {
