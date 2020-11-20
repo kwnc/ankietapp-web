@@ -3,7 +3,7 @@
 ## Description
 Backend for the survey management app "ankietApp"
 
-## Prerequisits
+## Prerequisite
 - Node js LTS https://nodejs.org/en/
 
 ## Install
