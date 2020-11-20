@@ -6,9 +6,11 @@ import {AuthGuard} from './helpers';
 
 const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
 const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
+const surveysModule = () => import('./surveys/surveys.module').then(x => x.SurveysModule);
 
 const routes: Routes = [
   {path: '', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'surveys', loadChildren: surveysModule, canActivate: [AuthGuard]},
   {path: 'users', loadChildren: usersModule, canActivate: [AuthGuard]},
   {path: 'account', loadChildren: accountModule},
 
