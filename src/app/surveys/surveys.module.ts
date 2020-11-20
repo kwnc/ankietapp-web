@@ -2,18 +2,20 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 
-import {UsersRoutingModule} from './users-routing.module';
+import {SurveysRoutingModule} from './surveys-routing.module';
 import {LayoutComponent} from './layout.component';
 import {ListComponent} from './list.component';
 import {AddEditComponent} from './add-edit.component';
 import {MaterialModule} from '../material.module';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    UsersRoutingModule,
-    MaterialModule
+    SurveysRoutingModule,
+    MaterialModule,
+    FlexLayoutModule
   ],
   declarations: [
     LayoutComponent,
@@ -21,5 +23,5 @@ import {MaterialModule} from '../material.module';
     AddEditComponent
   ]
 })
-export class UsersModule {
+export class SurveysModule {
 }
