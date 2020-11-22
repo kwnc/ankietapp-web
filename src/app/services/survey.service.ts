@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 // import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { Survey } from '../models/survey';
+import { NewSurvey } from '../models/survey-creation/new-survey';
 
 @Injectable({ providedIn: 'root' })
 export class SurveyService {
@@ -12,7 +12,7 @@ export class SurveyService {
         private http: HttpClient
     ) {}
 
-    create(name, description, dueDate) {
-        return this.http.post<Survey>(`${environment.apiUrl}/surveys`, {name, description, dueDate});
+    create(newSurvey: NewSurvey) {
+        return this.http.post(`${environment.apiUrl}/surveys`, newSurvey);
     }
 }
