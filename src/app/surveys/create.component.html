@@ -1,31 +1,98 @@
-﻿<h1>Stwórz Ankietę</h1>
-<div class="card">
+﻿<div class="card">
+  <h4 class="card-header">Nowa ankieta</h4>
   <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label for="name">Nazwa ankiety</label>
+        <label>Nazwa ankiety</label>
         <input type="text" formControlName="name" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
+                [ngClass]="{ 'is-invalid': submitted && f.name.errors }"/>
         <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
           <div *ngIf="f.name.errors.required">To pole jest wymagane</div>
         </div>
       </div>
       <div class="form-group">
-        <label for="description">Hasło</label>
-        <input type="description" formControlName="description" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
+        <label>Opis</label>
+        <input type="text" formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.description.errors }"/>
         <div *ngIf="submitted && f.description.errors" class="invalid-feedback">
-          <div *ngIf="f.description.errors.required">To pole jest wymagane</div>
+          <div *ngIf="f.description.errors.required">To pole jest wymaganey</div>
         </div>
       </div>
       <div class="form-group">
-        <label for="dueDate">Do kiedy</label>
-        <input type="dueDate" formControlName="dueDate" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && f.dueDate.errors }"/>
-        <div *ngIf="submitted && f.dueDate.errors" class="invalid-feedback">
-          <div *ngIf="f.dueDate.errors.required">To pole jest wymagane</div>
+        <div class="form-group">
+          <label>Do kiedy</label>
+          <mat-datepicker-toggle [for]="basicDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #basicDatepicker></mat-datepicker>
+          <input type="text" formControlName="dueDate" [matDatepicker]="basicDatepicker" class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f.dueDate.errors }">
+          <div *ngIf="submitted && f.dueDate.errors" class="invalid-feedback">
+            <div *ngIf="f.dueDate.errors.required">To pole jest wymaganey</div>
+          </div>
         </div>
       </div>
+      <div class="form-group">
+        <label>Użytkownicy</label>
+        <input type="text" formControlName="users" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && f.users.errors }"/>
+        <div *ngIf="submitted && f.users.errors" class="invalid-feedback">
+          <div *ngIf="f.users.errors.required">To pole jest wymaganey</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div formArrayName="questions">
+          <div *ngFor="let question of getQuestions().controls; let i=index" [formGroupName]="i">
+            <label>Pytanie {{i+1}}</label>
+
+            <div class="form-group">
+              <label>Typ pytania</label>
+              <select class='form-control' formControlName="type" (change)="onTypeChange(i, $event.target.value)">
+                <option *ngFor="let type of types" [value]="type">
+                  {{type}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Treść pytania</label>
+              <input type="text" formControlName="description" class="form-control"
+                [ngClass]="{ 'is-invalid': submitted && question.get('description').errors }">
+              <div *ngIf="question.get('description').errors" class="invalid-feedback">
+                <div *ngIf="question.get('description').errors.required" >To pole jest wymaganey</div>
+              </div>
+            </div>
+
+            <div *ngIf="isClosedQuestion(i)">
+              <div class="form-group">
+                <div formArrayName="choices">
+                  <div *ngFor="let choice of getChoices(i).controls; let j=index">
+                    <div class="form-group">
+                      <label>Odpowiedź {{j+1}}</label>
+                      <input type="text" [formControlName]="j" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && choice.errors }">
+                      <div *ngIf="choice.errors" class="invalid-feedback">
+                        <div *ngIf="choice.errors.required" >To pole jest wymaganey</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <button type="button" [disabled]="loading" class="btn btn-primary" (click)="addChoice(i)">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Dodaj odpowiedź
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="button" [disabled]="loading" class="btn btn-primary" (click)="addQuestion()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Dodaj pytanie
+          </button>
+        </div>
+      </div>
+
       <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">
           <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

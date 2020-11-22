@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Survey} from '../models/survey';
+import {NewSurvey} from '../models/survey-creation/new-survey';
 import {environment} from '../../environments/environment';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class SurveyService {
   }
 
   // tslint:disable-next-line:typedef
-  create(name, description, dueDate) {
-    return this.http.post<Survey>(`${environment.apiUrl}/surveys`, {name, description, dueDate});
+  create(newSurvey: NewSurvey) {
+    return this.http.post<NewSurvey>(`${environment.backendUrl}/surveys`, newSurvey);
   }
 }

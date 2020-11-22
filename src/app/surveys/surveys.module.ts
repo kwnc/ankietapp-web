@@ -10,13 +10,18 @@ import {MaterialModule} from '../material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import { FillComponent } from './fill.component';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
     SurveysRoutingModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     LayoutComponent,
