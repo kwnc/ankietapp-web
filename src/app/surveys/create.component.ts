@@ -51,6 +51,10 @@ export class CreateComponent implements OnInit {
     }));
   }
 
+  deleteQuestion(questionIndex: number): void {
+    this.getQuestions().removeAt(questionIndex);
+  }
+
   isClosedQuestion(index: number): boolean {
     return this.getQuestions().at(index).get('type').value === this.multipleChoiceType ||
     this.getQuestions().at(index).get('type').value === this.singleChoice;
@@ -76,6 +80,10 @@ export class CreateComponent implements OnInit {
 
   addChoice(questionIndex: number): void {
     this.getChoices(questionIndex).push(new FormControl('', [Validators.required]));
+  }
+
+  deleteChoice(questionIndex: number, choiceIndex: number): void {
+    this.getChoices(questionIndex).removeAt(choiceIndex);
   }
 
   ngOnInit(): void {
