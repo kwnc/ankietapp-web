@@ -1,18 +1,25 @@
 ﻿<h1>Ankiety</h1>
-<a routerLink="create"><button mat-raised-button color="primary">Dodaj ankietę</button></a>
-<div fxLayout="row">
-  <mat-card class="survey" *ngFor="let survey of surveys" fxFlex.lg="10" fxFlex.lt-lg="25" fxFlex.xs="50">
-    <mat-card-header class="mat-typography">
-      <mat-card-title>
-        <div class="mat-title">{{survey.name}}</div>
-      </mat-card-title>
-    </mat-card-header>
-    <img mat-card-image src="assets/img/survey-default.png" alt="Domyślne zdjęcie ankiety">
-    <mat-card-content>
-      <p>{{survey.description}}</p>
-    </mat-card-content>
-    <mat-card-actions>
-      <a routerLink="fill/{{survey.id}}"><button mat-raised-button color="accent">WYPEŁNIJ</button></a>
-    </mat-card-actions>
-  </mat-card>
+<a routerLink="create">
+  <button mat-raised-button color="primary">Dodaj ankietę</button>
+</a>
+
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let survey of surveys">
+      <mat-card class="survey mat-elevation-z4">
+        <mat-card-header class="mat-typography">
+          <mat-card-title class="mat-title">{{survey.name}}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="assets/img/survey-default.png" alt="Domyślne zdjęcie ankiety">
+        <mat-card-content>
+          <p>{{survey.description}}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <a routerLink="fill/{{survey.id}}">
+            <button mat-raised-button color="accent">WYPEŁNIJ</button>
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
 </div>
