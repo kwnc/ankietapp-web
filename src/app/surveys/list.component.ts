@@ -1,33 +1,22 @@
 ﻿import {Component, OnInit} from '@angular/core';
-import {first} from 'rxjs/operators';
 
-import {AccountService} from '@app/services';
-import {SURVEYS} from '../mock-survey';
 import {Survey} from '../models/survey';
+import {SurveyService} from '../services';
 
 @Component({templateUrl: 'list.component.html'})
 export class ListComponent implements OnInit {
 
-  surveys = SURVEYS;
+  surveys: Survey[];
   selectedSurvey: Survey;
 
-  ngOnInit(): void {
+  constructor(private surveyService: SurveyService) {
   }
 
-  // constructor(private accountService: AccountService) {
-  // }
-  //
-  // ngOnInit(): void {
-  //   this.accountService.getAll()
-  //     .pipe(first())
-  //     .subscribe(users => this.users = users);
-  // }
-  //
-  // deleteUser(id: string) {
-  //   const user = this.users.find(x => x.id === id);
-  //   user.isDeleting = true;
-  //   this.accountService.delete(id)
-  //     .pipe(first())
-  //     .subscribe(() => this.users = this.users.filter(x => x.id !== id));
-  // }
+  ngOnInit(): void {
+    this.getSurveys();
+  }
+
+  getSurveys(): void {
+    this.surveyService.getSurveys().subscribe(surveys => this.surveys = surveys);
+  }
 }

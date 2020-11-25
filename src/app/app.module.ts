@@ -12,7 +12,6 @@ import {AppComponent} from './app.component';
 import {AlertComponent} from './components';
 import {HomeComponent} from './home';
 
-import {SurveyListComponent} from './components/survey-list/survey-list.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -29,8 +28,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
   declarations: [
     AppComponent,
     AlertComponent,
-    HomeComponent,
-    SurveyListComponent],
+    HomeComponent],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
