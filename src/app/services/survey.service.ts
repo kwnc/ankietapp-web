@@ -74,11 +74,11 @@ export class SurveyService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  // // tslint:disable-next-line:typedef
-  // private handleError<T>(operation = 'operation', result?: T) {
-  //   return (error: any): Observable<T> => {
-  //     // Let the app keep running by returning an empty result.
-  //     return of(result as T);
-  //   };
-  // }
+  // tslint:disable-next-line:typedef
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
 }
