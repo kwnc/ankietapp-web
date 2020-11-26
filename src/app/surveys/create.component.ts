@@ -90,7 +90,8 @@ export class CreateComponent implements OnInit {
     this.formGroup = this.formBuilder.group({
         name: ['', Validators.required],
         description: ['', Validators.required],
-        users: new FormControl('', [Validators.required]),
+        public: [false, Validators.required],
+        users: new FormControl('', [Validators.nullValidator]),
         dueDate: ['', Validators.required],
         questions: new FormArray([])
     });
@@ -114,7 +115,12 @@ export class CreateComponent implements OnInit {
     newSurvey.name = this.formGroup.get('name').value;
     newSurvey.description = this.formGroup.get('description').value;
     newSurvey.dueDate = this.formGroup.get('dueDate').value;
-    newSurvey.users = this.formGroup.get('users').value.split(';');
+    newSurvey.public = this.formGroup.get('public').value;
+    if (!newSurvey.public) {
+      newSurvey.users = this.formGroup.get('users').value.split(';');
+    } else {
+      newSurvey.users = [];
+    }
     newSurvey.questions = [];
 
     const questionsArray = this.formGroup.get('questions') as FormArray;

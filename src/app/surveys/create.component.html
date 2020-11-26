@@ -30,15 +30,17 @@
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Użytkownicy</label>
-        <input type="text" formControlName="users" class="form-control"
-                [ngClass]="{ 'is-invalid': submitted && f.users.errors }"/>
-        <div *ngIf="submitted && f.users.errors" class="invalid-feedback">
-          <div *ngIf="f.users.errors.required">To pole jest wymaganey</div>
+      <div class="form-group form-check">
+        <input type="checkbox" formControlName="public" id="public" class="form-check-input"/>
+        <label for="public" class="form-check-label">Publiczna</label>
+      </div>
+      <div *ngIf="!f.public.value">
+        <div class="form-group">
+          <label>Użytkownicy</label>
+          <input type="text" formControlName="users" class="form-control"
+                  [ngClass]="{ 'is-invalid': submitted && f.users.errors }"/>
         </div>
       </div>
-
       <div formArrayName="questions">
         <div class="form-group card" *ngFor="let question of getQuestions().controls; let i=index" [formGroupName]="i">
           <div class="row card-header" style="margin: 0;">
