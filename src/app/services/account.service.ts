@@ -6,6 +6,7 @@ import {finalize, map} from 'rxjs/operators';
 
 import {environment} from '@environments/environment';
 import {Account} from '@app/models';
+import {tokenize} from '@angular/compiler/src/ml_parser/lexer';
 
 @Injectable({providedIn: 'root'})
 export class AccountService {
@@ -25,28 +26,15 @@ export class AccountService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<any>(`${environment.backendUrl}/authenticate`, {email, password}, {withCredentials: true})
-      .pipe(map(user => {
-        this.accountSubject.next(user);
-        this.startRefreshTokenTimer();
-        return user;
-      }));
+    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
+      .subscribe(resp => console.log(resp.headers.get('X-Token')));
   }
 
   logout() {
     this.http.post<any>(`${environment.backendUrl}/revoke-token`, {}, {withCredentials: true}).subscribe();
-    this.stopRefreshTokenTimer();
+    // this.stopRefreshTokenTimer();
     this.accountSubject.next(null);
     this.router.navigate(['/account/login']);
-  }
-
-  refreshToken() {
-    return this.http.post<any>(`${environment.backendUrl}/refresh-token`, {}, {withCredentials: true})
-      .pipe(map((account) => {
-        this.accountSubject.next(account);
-        this.startRefreshTokenTimer();
-        return account;
-      }));
   }
 
   register(account: Account) {
@@ -102,23 +90,5 @@ export class AccountService {
           this.logout();
         }
       }));
-  }
-
-  // helper methods
-
-  private refreshTokenTimeout;
-
-  private startRefreshTokenTimer() {
-    // parse json object from base64 encoded jwt token
-    const jwtToken = JSON.parse(atob(this.accountValue.jwtToken.split('.')[1]));
-
-    // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - (60 * 1000);
-    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
-  }
-
-  private stopRefreshTokenTimer() {
-    clearTimeout(this.refreshTokenTimeout);
   }
 }
