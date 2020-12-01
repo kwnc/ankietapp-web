@@ -27,10 +27,10 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string): Observable<boolean> {
-    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
+  login(user: {email: string, password: string}): Observable<boolean> {
+    return this.http.post<any>(`${environment.backendUrl}/signin`, user)
       .pipe(
-        tap(tokens => this.doLoginUser(email, tokens)),
+        tap(tokens => this.doLoginUser(user.email, tokens)),
         mapTo(true),
         catchError(error => {
           alert(error.error);
