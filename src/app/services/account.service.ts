@@ -5,11 +5,8 @@ import {BehaviorSubject, Observable, of} from 'rxjs';
 import {finalize, map, mapTo, tap, catchError} from 'rxjs/operators';
 
 import {environment} from '@environments/environment';
-// import {Account} from '@app/models';
-import { Account } from '../models/account';
-import { Tokens } from '../models/tokens';
-
-import {tokenize} from '@angular/compiler/src/ml_parser/lexer';
+import {Account} from '@app/models';
+import {Tokens} from '@app/models';
 
 @Injectable({providedIn: 'root'})
 export class AccountService {
@@ -31,7 +28,7 @@ export class AccountService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    return this.http.post<any>(`${​​​​​environment.backendUrl}/signIn`, {​​​​​ email, password })
+    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
       .pipe(
         tap(tokens => this.doLoginUser(email, tokens)),
         mapTo(true),
@@ -39,69 +36,54 @@ export class AccountService {
           alert(error.error);
           return of(false);
         }));
-  }​​​​​
+  }
 
-  private doLoginUser(username: string, tokens: any) {
+  private doLoginUser(username: string, tokens: any): void {
     this.loggedUser = username;
     this.storeTokens(tokens);
   }
 
-  private storeTokens(tokens: Tokens) {
-    console.log(tokens)
+  private storeTokens(tokens: Tokens): void {
+    console.log(tokens);
     localStorage.setItem(this.JWT_TOKEN, tokens.idToken);
-    // localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
   }
-  
-//   login(email: string, password: string) {​​​​​
-//     return this.http.post<any>(`${​​​​​environment.backendUrl}​​​​​/signin`, {​​​​​ email, password }​​​​​)
-//       .pipe(map(account => {​​​​​
-//         // store user details and jwt token in local storage to keep user logged in between page refreshes
-//         localStorage.setItem('account', JSON.stringify(account));
-//         // this.accountSubject.next(account);
-//         // return account;
-//       }​​​​​));
-//   }​​​​​
-  
-  logout() {
+
+  logout(): void {
     this.http.post<any>(`${environment.backendUrl}/revoke-token`, {}, {withCredentials: true}).subscribe();
     // this.stopRefreshTokenTimer();
     this.accountSubject.next(null);
     this.router.navigate(['/account/login']);
   }
 
-  register(account: Account) {
+  register(account: Account): Observable<object> {
     return this.http.post(`${environment.backendUrl}/signup`, account);
   }
 
-  verifyEmail(token: string) {
+  verifyEmail(token: string): Observable<object> {
     return this.http.post(`${environment.backendUrl}/verify-email`, {token});
   }
 
-  forgotPassword(email: string) {
+  forgotPassword(email: string): Observable<object> {
     return this.http.post(`${environment.backendUrl}/forgot-password`, {email});
   }
 
-  validateResetToken(token: string) {
-    return this.http.post(`${environment.backendUrl}/validate-reset-token`, {token});
-  }
-
-  resetPassword(token: string, password: string, confirmPassword: string) {
+  resetPassword(token: string, password: string, confirmPassword: string): Observable<object> {
     return this.http.post(`${environment.backendUrl}/reset-password`, {token, password, confirmPassword});
   }
 
-  getAll() {
+  getAll(): Observable<Account[]> {
     return this.http.get<Account[]>(`${environment.backendUrl}/users`);
   }
 
-  getById(id: string) {
+  getById(id: string): Observable<Account> {
     return this.http.get<Account>(`${environment.backendUrl}/users/${id}`);
   }
 
-  create(params) {
+  create(params): Observable<object> {
     return this.http.post(environment.backendUrl, params);
   }
 
-  update(id, params) {
+  update(id, params): Observable<any> {
     return this.http.put(`${environment.backendUrl}/${id}`, params)
       .pipe(map((account: any) => {
         // update the current account if it was updated
@@ -114,7 +96,7 @@ export class AccountService {
       }));
   }
 
-  delete(id: string) {
+  delete(id: string): Observable<object> {
     return this.http.delete(`${environment.backendUrl}/${id}`)
       .pipe(finalize(() => {
         // auto logout if the logged in account was deleted
