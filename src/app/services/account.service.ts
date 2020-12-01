@@ -1,17 +1,22 @@
 ﻿import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {finalize, map} from 'rxjs/operators';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {finalize, map, mapTo, tap, catchError} from 'rxjs/operators';
 
 import {environment} from '@environments/environment';
-import {Account} from '@app/models';
+// import {Account} from '@app/models';
+import { Account } from '../models/account';
+import { Tokens } from '../models/tokens';
+
 import {tokenize} from '@angular/compiler/src/ml_parser/lexer';
 
 @Injectable({providedIn: 'root'})
 export class AccountService {
   private accountSubject: BehaviorSubject<Account>;
   public account: Observable<Account>;
+  private loggedUser: string;
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
 
   constructor(
     private router: Router,
@@ -25,11 +30,38 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(email: string, password: string) {
-    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
-      .subscribe(resp => console.log(resp.headers.get('X-Token')));
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<any>(`${​​​​​environment.backendUrl}/signIn`, {​​​​​ email, password })
+      .pipe(
+        tap(tokens => this.doLoginUser(email, tokens)),
+        mapTo(true),
+        catchError(error => {
+          alert(error.error);
+          return of(false);
+        }));
+  }​​​​​
+
+  private doLoginUser(username: string, tokens: any) {
+    this.loggedUser = username;
+    this.storeTokens(tokens);
   }
 
+  private storeTokens(tokens: Tokens) {
+    console.log(tokens)
+    localStorage.setItem(this.JWT_TOKEN, tokens.idToken);
+    // localStorage.setItem(this.REFRESH_TOKEN, tokens.refreshToken);
+  }
+  
+//   login(email: string, password: string) {​​​​​
+//     return this.http.post<any>(`${​​​​​environment.backendUrl}​​​​​/signin`, {​​​​​ email, password }​​​​​)
+//       .pipe(map(account => {​​​​​
+//         // store user details and jwt token in local storage to keep user logged in between page refreshes
+//         localStorage.setItem('account', JSON.stringify(account));
+//         // this.accountSubject.next(account);
+//         // return account;
+//       }​​​​​));
+//   }​​​​​
+  
   logout() {
     this.http.post<any>(`${environment.backendUrl}/revoke-token`, {}, {withCredentials: true}).subscribe();
     // this.stopRefreshTokenTimer();

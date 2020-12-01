@@ -33,29 +33,34 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
+    // this.submitted = true;
 
-    // reset alerts on submit
-    this.alertService.clear();
+    // // reset alerts on submit
+    // this.alertService.clear();
 
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
-    }
+    // // stop here if form is invalid
+    // if (this.form.invalid) {
+    //   return;
+    // }
 
-    this.loading = true;
+    // this.loading = true;
     this.accountService.login(this.f.email.value, this.f.password.value)
       .pipe(first())
-      .subscribe({
-        next: () => {
-          // get return url from query parameters or default to home page
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigateByUrl(returnUrl);
-        },
-        error: error => {
-          this.alertService.error(error);
-          this.loading = false;
+      .subscribe(success => {
+        if (success) {
+          this.router.navigate(['/surveys']);
         }
       });
+      // .subscribe({
+      //   next: () => {
+      //     // get return url from query parameters or default to home page
+      //     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+      //     this.router.navigateByUrl(returnUrl);
+      //   },
+      //   error: error => {
+      //     this.alertService.error(error);
+      //     this.loading = false;
+      //   }
+      // });
   }
 }
