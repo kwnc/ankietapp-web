@@ -25,19 +25,10 @@ export class SurveyService {
   ) {
   }
 
-  // tslint:disable-next-line:typedef
   create(newSurvey: NewSurvey) {
     const token = this.accountService.getJwtToken();
     return this.http.post<NewSurvey>(`${environment.backendUrl}/surveys`, newSurvey, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)});
   }
-
-  // /** GET surveys from the servers */
-  // getSurveys(): Observable<Survey[]> {
-  //   return this.http.get<Survey[]>(`${environment.backendUrl}/surveys`)
-  //     .pipe(
-  //       catchError(this.handleError<Survey[]>('getSurveys', []))
-  //     );
-  // }
 
   /** GET surveys from the server */
   getSurveys(): Observable<Survey[]> {
@@ -66,7 +57,7 @@ export class SurveyService {
     .pipe(catchError(this.errorService.handleError<Survey>(`getSurvey id=${id}`)));
   }
 
-  /* GET surveys whose name contains search term */
+  /** GET surveys whose name contains search term */
   searchSurveys(term: string): Observable<Survey[]> {
     const token = this.accountService.getJwtToken();
     if (!term.trim()) {
