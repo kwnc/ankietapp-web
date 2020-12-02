@@ -1,42 +1,47 @@
-﻿import {Component, OnInit} from '@angular/core';
+﻿import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AccountService} from '@app/services';
 
 @Component({templateUrl: 'login.component.html'})
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   loginForm: FormGroup;
 
   constructor(private accountService: AccountService, private formBuilder: FormBuilder, private router: Router) {
-  }
-
-  ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
-      email: [''],
-      password: ['']
+      email: ['', Validators.email],
+      password: ['', Validators.required]
     });
   }
 
-  // tslint:disable-next-line:typedef
-  get f() {
-    return this.loginForm.controls;
+  login(): void {
+    const val = this.loginForm.value;
+
+    if (val.email && val.password) {
+      this.accountService.login(val.email, val.password)
+        .subscribe(
+          () => {
+            console.log('Użytkownik jest zalogowany');
+            this.router.navigateByUrl('/home');
+          }
+        );
+    }
   }
 
-  login(): void {
-    this.accountService.login(
-      {
-        email: this.f.email.value,
-        password: this.f.password.value
-      }
-    )
-      .subscribe(success => {
-        if (success) {
-          this.router.navigate(['/']);
-        }
-      });
-  }
+  // this.accountService.login(
+  //   {
+  //     email: this.f.email.value,
+  //     password: this.f.password.value
+  //   }
+  // )
+  //   .subscribe(success => {
+  //     if (success) {
+  //       this.router.navigate(['/']);
+  //     }
+  //   });
+  // }
 
 
 //   form: FormGroup;

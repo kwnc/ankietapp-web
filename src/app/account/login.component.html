@@ -14,7 +14,8 @@
     </mat-form-field>
 
     <div class="actions">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">LOGIN</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid" (click)="login()">LOGIN
+      </button>
     </div>
 
     <a routerLink="../register" class="btn btn-link">Rejestracja</a>
@@ -22,7 +23,6 @@
     <div class="form-group col text-right">
       <a routerLink="../forgot-password" class="btn btn-link pr-0">Zapomniałeś hasła?</a>
     </div>
-
 
   </form>
 

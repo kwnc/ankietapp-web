@@ -27,10 +27,10 @@ export class AccountService {
     return this.accountSubject.value;
   }
 
-  login(user: {email: string, password: string}): Observable<boolean> {
-    return this.http.post<any>(`${environment.backendUrl}/signin`, user)
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
       .pipe(
-        tap(tokens => this.doLoginUser(user.email, tokens)),
+        tap(tokens => this.doLoginUser(email, tokens)),
         mapTo(true),
         catchError(error => {
           alert(error.error);
@@ -53,6 +53,14 @@ export class AccountService {
     // this.stopRefreshTokenTimer();
     this.accountSubject.next(null);
     this.router.navigate(['/account/login']);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getJwtToken();
+  }
+
+  getJwtToken(): string {
+    return localStorage.getItem(this.JWT_TOKEN);
   }
 
   register(account: Account): Observable<object> {
