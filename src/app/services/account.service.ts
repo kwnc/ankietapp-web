@@ -7,6 +7,7 @@ import {finalize, map, mapTo, tap, catchError} from 'rxjs/operators';
 import {environment} from '@environments/environment';
 import {Account} from '@app/models';
 import {Tokens} from '@app/models';
+import {ErrorService} from '@app/services/error.service';
 
 @Injectable({providedIn: 'root'})
 export class AccountService {
@@ -17,7 +18,8 @@ export class AccountService {
 
   constructor(
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private errorService: ErrorService
   ) {
     this.accountSubject = new BehaviorSubject<Account>(null);
     this.account = this.accountSubject.asObservable();
@@ -79,8 +81,9 @@ export class AccountService {
     return this.http.post(`${environment.backendUrl}/reset-password`, {token, password, confirmPassword});
   }
 
-  getAll(): Observable<Account[]> {
-    return this.http.get<Account[]>(`${environment.backendUrl}/users`);
+  getUsers(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${environment.backendUrl}/users`)
+      .pipe(catchError(this.errorService.handleError<Account[]>('getUsers()', [])));
   }
 
   getById(id: string): Observable<Account> {

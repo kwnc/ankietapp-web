@@ -6,6 +6,7 @@ import {environment} from '@environments/environment';
 import {Observable, of} from 'rxjs';
 import {Survey} from '@app/models/survey';
 import {catchError} from 'rxjs/operators';
+import {ErrorService} from '@app/services/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class SurveyService {
   };
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private errorService: ErrorService
   ) {
   }
 
@@ -37,7 +39,7 @@ export class SurveyService {
   /** GET surveys from the server */
   getSurveys(): Observable<Survey[]> {
     return this.http.get<Survey[]>(`${environment.backendUrl}/surveys`)
-      .pipe(catchError(this.handleError<Survey[]>('getSurveys', [])));
+      .pipe(catchError(this.errorService.handleError<Survey[]>('getSurveys', [])));
   }
 
   // /** GET survey by id. Return `undefined` when id not found */
@@ -54,7 +56,7 @@ export class SurveyService {
   /** GET survey by id. Will 404 if id not found */
   getSurvey(id: number): Observable<Survey> {
     const url = `${environment.backendUrl}/${id}`;
-    return this.http.get<Survey>(url).pipe(catchError(this.handleError<Survey>(`getSurvey id=${id}`)));
+    return this.http.get<Survey>(url).pipe(catchError(this.errorService.handleError<Survey>(`getSurvey id=${id}`)));
   }
 
   /* GET surveys whose name contains search term */
@@ -64,21 +66,7 @@ export class SurveyService {
       return of([]);
     }
     return this.http.get<Survey[]>(`${environment.backendUrl}/?name=${term}`).pipe(
-      catchError(this.handleError<Survey[]>('searchSurveys', []))
+      catchError(this.errorService.handleError<Survey[]>('searchSurveys', []))
     );
-  }
-
-  /**
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  // tslint:disable-next-line:typedef
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
   }
 }
