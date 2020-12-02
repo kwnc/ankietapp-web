@@ -1,82 +1,119 @@
-﻿import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+﻿import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {finalize, map, mapTo, tap, catchError} from 'rxjs/operators';
 
-import { environment } from '@environments/environment';
-import { User } from '@app/models';
+import {environment} from '@environments/environment';
+import {Account} from '@app/models';
+import {Tokens} from '@app/models';
+import {ErrorService} from '@app/services/error.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class AccountService {
-    private userSubject: BehaviorSubject<User>;
-    public user: Observable<User>;
+  private accountSubject: BehaviorSubject<Account>;
+  public account: Observable<Account>;
+  private loggedUser: string;
+  private readonly JWT_TOKEN = 'JWT_TOKEN';
 
-    constructor(
-        private router: Router,
-        private http: HttpClient
-    ) {
-        this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-        this.user = this.userSubject.asObservable();
-    }
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private errorService: ErrorService
+  ) {
+    this.accountSubject = new BehaviorSubject<Account>(null);
+    this.account = this.accountSubject.asObservable();
+  }
 
-    public get userValue(): User {
-        return this.userSubject.value;
-    }
+  public get accountValue(): Account {
+    return this.accountSubject.value;
+  }
 
-    login(username, password) {
-        return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, { username, password })
-            .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-                this.userSubject.next(user);
-                return user;
-            }));
-    }
+  login(email: string, password: string): Observable<boolean> {
+    return this.http.post<any>(`${environment.backendUrl}/signin`, {email, password})
+      .pipe(
+        tap(tokens => this.doLoginUser(email, tokens)),
+        mapTo(true),
+        catchError(error => {
+          alert(error.error);
+          return of(false);
+        }));
+  }
 
-    logout() {
-        // remove user from local storage and set current user to null
-        localStorage.removeItem('user');
-        this.userSubject.next(null);
-        this.router.navigate(['/account/login']);
-    }
+  private doLoginUser(username: string, tokens: any): void {
+    this.loggedUser = username;
+    this.storeTokens(tokens);
+  }
 
-    register(user: User) {
-        return this.http.post(`${environment.apiUrl}/users/register`, user);
-    }
+  private storeTokens(tokens: Tokens): void {
+    console.log(tokens);
+    localStorage.setItem(this.JWT_TOKEN, tokens.idToken);
+  }
 
-    getAll() {
-        return this.http.get<User[]>(`${environment.apiUrl}/users`);
-    }
+  logout(): void {
+    this.http.post<any>(`${environment.backendUrl}/revoke-token`, {}, {withCredentials: true}).subscribe();
+    // this.stopRefreshTokenTimer();
+    this.accountSubject.next(null);
+    this.router.navigate(['/account/login']);
+  }
 
-    getById(id: string) {
-        return this.http.get<User>(`${environment.apiUrl}/users/${id}`);
-    }
+  isLoggedIn(): boolean {
+    return !!this.getJwtToken();
+  }
 
-    update(id, params) {
-        return this.http.put(`${environment.apiUrl}/users/${id}`, params)
-            .pipe(map(x => {
-                // update stored user if the logged in user updated their own record
-                if (id == this.userValue.id) {
-                    // update local storage
-                    const user = { ...this.userValue, ...params };
-                    localStorage.setItem('user', JSON.stringify(user));
+  getJwtToken(): string {
+    return localStorage.getItem(this.JWT_TOKEN);
+  }
 
-                    // publish updated user to subscribers
-                    this.userSubject.next(user);
-                }
-                return x;
-            }));
-    }
+  register(account: Account): Observable<object> {
+    return this.http.post(`${environment.backendUrl}/signup`, account);
+  }
 
-    delete(id: string) {
-        return this.http.delete(`${environment.apiUrl}/users/${id}`)
-            .pipe(map(x => {
-                // auto logout if the logged in user deleted their own record
-                if (id == this.userValue.id) {
-                    this.logout();
-                }
-                return x;
-            }));
-    }
+  verifyEmail(token: string): Observable<object> {
+    return this.http.post(`${environment.backendUrl}/verify-email`, {token});
+  }
+
+  forgotPassword(email: string): Observable<object> {
+    return this.http.post(`${environment.backendUrl}/forgot-password`, {email});
+  }
+
+  resetPassword(token: string, password: string, confirmPassword: string): Observable<object> {
+    return this.http.post(`${environment.backendUrl}/reset-password`, {token, password, confirmPassword});
+  }
+
+  getUsers(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${environment.backendUrl}/users`)
+      .pipe(catchError(this.errorService.handleError<Account[]>('getUsers()', [])));
+  }
+
+  getById(id: string): Observable<Account> {
+    return this.http.get<Account>(`${environment.backendUrl}/users/${id}`);
+  }
+
+  create(params): Observable<object> {
+    return this.http.post(environment.backendUrl, params);
+  }
+
+  update(id, params): Observable<any> {
+    return this.http.put(`${environment.backendUrl}/${id}`, params)
+      .pipe(map((account: any) => {
+        // update the current account if it was updated
+        if (account.id === this.accountValue.id) {
+          // publish updated account to subscribers
+          account = {...this.accountValue, ...account};
+          this.accountSubject.next(account);
+        }
+        return account;
+      }));
+  }
+
+  delete(id: string): Observable<object> {
+    return this.http.delete(`${environment.backendUrl}/${id}`)
+      .pipe(finalize(() => {
+        // auto logout if the logged in account was deleted
+        if (id === this.accountValue.id) {
+          this.logout();
+        }
+      }));
+  }
 }
