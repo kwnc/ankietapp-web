@@ -9,14 +9,11 @@ const surveysModule = () => import('./surveys/surveys.module').then(x => x.Surve
 
 // , canActivate: [AuthGuard]
 const routes: Routes = [
+  {path: '', pathMatch: 'full', redirectTo: '/account/login'},
   {path: 'home', component: HomeComponent},
   {path: 'surveys', loadChildren: surveysModule},
   {path: 'users', loadChildren: usersModule},
   {path: 'account', loadChildren: accountModule},
-
-  // otherwise redirect to home
-  {path: '**', redirectTo: ''},
-  {path: '', pathMatch: 'full', redirectTo: '/account/login'}
 ];
 
 @NgModule({
