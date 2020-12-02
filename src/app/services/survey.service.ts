@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import {Survey} from '@app/models/survey';
 import {catchError} from 'rxjs/operators';
 import {ErrorService} from '@app/services/error.service';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,13 +20,15 @@ export class SurveyService {
 
   constructor(
     private http: HttpClient,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private accountService: AccountService
   ) {
   }
 
   // tslint:disable-next-line:typedef
   create(newSurvey: NewSurvey) {
-    return this.http.post<NewSurvey>(`${environment.backendUrl}/surveys`, newSurvey);
+    const token = this.accountService.getJwtToken();
+    return this.http.post<NewSurvey>(`${environment.backendUrl}/surveys`, newSurvey, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)});
   }
 
   // /** GET surveys from the servers */
@@ -38,7 +41,9 @@ export class SurveyService {
 
   /** GET surveys from the server */
   getSurveys(): Observable<Survey[]> {
-    return this.http.get<Survey[]>(`${environment.backendUrl}/surveys`)
+    const token = this.accountService.getJwtToken();
+    // tslint:disable-next-line: max-line-length
+    return this.http.get<Survey[]>(`${environment.backendUrl}/surveys`, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
       .pipe(catchError(this.errorService.handleError<Survey[]>('getSurveys', [])));
   }
 
@@ -55,17 +60,21 @@ export class SurveyService {
 
   /** GET survey by id. Will 404 if id not found */
   getSurvey(id: number): Observable<Survey> {
+    const token = this.accountService.getJwtToken();
     const url = `${environment.backendUrl}/${id}`;
-    return this.http.get<Survey>(url).pipe(catchError(this.errorService.handleError<Survey>(`getSurvey id=${id}`)));
+    return this.http.get<Survey>(url,  { headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
+    .pipe(catchError(this.errorService.handleError<Survey>(`getSurvey id=${id}`)));
   }
 
   /* GET surveys whose name contains search term */
   searchSurveys(term: string): Observable<Survey[]> {
+    const token = this.accountService.getJwtToken();
     if (!term.trim()) {
       // if not search term, return empty hero array.
       return of([]);
     }
-    return this.http.get<Survey[]>(`${environment.backendUrl}/?name=${term}`).pipe(
+    // tslint:disable-next-line: max-line-length
+    return this.http.get<Survey[]>(`${environment.backendUrl}/?name=${term}`, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)}).pipe(
       catchError(this.errorService.handleError<Survey[]>('searchSurveys', []))
     );
   }

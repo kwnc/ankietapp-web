@@ -151,7 +151,7 @@ export class CreateComponent implements OnInit {
       .subscribe(
       data => {
         console.log(data);
-        const returnUrl = '/';
+        const returnUrl = '/home';
         this.router.navigateByUrl(returnUrl);
       },
       err => {
