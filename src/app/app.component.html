@@ -1,13 +1,16 @@
-﻿<!-- nav -->
-<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="user">
-  <div class="navbar-nav">
-    <a class="nav-item nav-link" routerLink="/" routerLinkActive="active"
-       [routerLinkActiveOptions]="{exact: true}">Strona główna</a>
-    <a class="nav-item nav-link" routerLink="/surveys" routerLinkActive="active">Ankiety</a>
-    <a class="nav-item nav-link" routerLink="/users" routerLinkActive="active">Użytkownicy</a>
-    <a class="nav-item nav-link" (click)="logout()">Wyloguj</a>
-  </div>
-</nav>
+﻿<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <img src="favicon.ico" alt="logo">
+    <h1>nkietApp</h1>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'/surveys'"> Ankiety </a>
+      <a mat-button [routerLink]="'/surveys/create'"> Dodaj ankietę </a>
+      <a mat-button [routerLink]="'/users'"> Użytkownicy </a>
+      <a mat-button [routerLink]="'/users/add'"> Dodaj użytkownika </a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
 
 <!-- main app container -->
 <div class="app-container" [ngClass]="{ 'bg-light': user }">

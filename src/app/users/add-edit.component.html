@@ -1,5 +1,5 @@
-﻿<h1 *ngIf="isAddMode">Add Account</h1>
-<h1 *ngIf="!isAddMode">Edit Account</h1>
+﻿<h1 *ngIf="isAddMode">Dodaj użytkownika</h1>
+<h1 *ngIf="!isAddMode">Edytuj użytkownika</h1>
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form-row">
     <div class="form-group col">
