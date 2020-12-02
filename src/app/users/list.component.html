@@ -3,17 +3,13 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th style="width: 30%">Imię</th>
-            <th style="width: 30%">Nazwisko</th>
-            <th style="width: 30%">Nazwa użytkownika</th>
+            <th style="width: 30%">Email</th>
             <th style="width: 10%"></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let user of users">
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.username}}</td>
+            <td>{{user.email}}</td>
             <td style="white-space: nowrap">
                 <a routerLink="edit/{{user.id}}" class="btn btn-sm btn-primary mr-1">Edytuj</a>
                 <button (click)="deleteUser(user.id)" class="btn btn-sm btn-danger btn-delete-user" [disabled]="user.isDeleting">
