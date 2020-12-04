@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
-import { AccountRoutingModule } from './account-routing.module';
-import { LayoutComponent } from './layout.component';
-import { LoginComponent } from './login.component';
-import { RegisterComponent } from './register.component';
+import {AccountRoutingModule} from './account-routing.module';
+import {LayoutComponent} from './layout.component';
+import {LoginComponent} from './login.component';
+import {RegisterComponent} from './register.component';
 import {MaterialModule} from '../material.module';
 
 @NgModule({
@@ -13,12 +13,14 @@ import {MaterialModule} from '../material.module';
     CommonModule,
     ReactiveFormsModule,
     AccountRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ],
-    declarations: [
-        LayoutComponent,
-        LoginComponent,
-        RegisterComponent
-    ]
+  declarations: [
+    LayoutComponent,
+    LoginComponent,
+    RegisterComponent
+  ]
 })
-export class AccountModule { }
+export class AccountModule {
+}
