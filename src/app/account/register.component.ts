@@ -3,7 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {first} from 'rxjs/operators';
 
-import {AccountService, AlertService} from '@app/services';
+import {AuthService, AlertService} from '@app/services';
 import {MustMatch} from '../helpers/must-match.validator';
 
 @Component({templateUrl: 'register.component.html'})
@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService,
+    private authService: AuthService,
     private alertService: AlertService
   ) {
   }
@@ -49,7 +49,7 @@ export class RegisterComponent implements OnInit {
     }
 
     this.loading = true;
-    this.accountService.register(this.form.value)
+    this.authService.register(this.form.value)
       .pipe(first())
       .subscribe({
         next: () => {

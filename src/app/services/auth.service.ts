@@ -10,7 +10,7 @@ import {Tokens} from '@app/models';
 import {ErrorService} from '@app/services/error.service';
 
 @Injectable({providedIn: 'root'})
-export class AccountService {
+export class AuthService {
   private accountSubject: BehaviorSubject<Account>;
   public account: Observable<Account>;
   private loggedUser: string;
