@@ -7,7 +7,7 @@ import {Observable, of} from 'rxjs';
 import {Survey} from '@app/models/survey';
 import {catchError} from 'rxjs/operators';
 import {ErrorService} from '@app/services/error.service';
-import { AccountService } from './account.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class SurveyService {
   constructor(
     private http: HttpClient,
     private errorService: ErrorService,
-    private accountService: AccountService
+    private accountService: AuthService
   ) {
   }
 

@@ -1,11 +1,11 @@
 ﻿import {Component} from '@angular/core';
 
-import {AccountService} from '@app/services';
+import {AuthService} from '@app/services';
 
 @Component({templateUrl: 'home.component.html'})
 export class HomeComponent {
   account = this.accountService.accountValue;
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AuthService) {
   }
 }

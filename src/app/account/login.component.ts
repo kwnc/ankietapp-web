@@ -2,14 +2,14 @@
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {AccountService} from '@app/services';
+import {AuthService} from '@app/services';
 
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent {
 
   loginForm: FormGroup;
 
-  constructor(private accountService: AccountService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
     this.loginForm = this.formBuilder.group({
       email: ['', Validators.email],
       password: ['', Validators.required]
@@ -20,7 +20,7 @@ export class LoginComponent {
     const val = this.loginForm.value;
 
     if (val.email && val.password) {
-      this.accountService.login(val.email, val.password)
+      this.authService.login(val.email, val.password)
         .subscribe(
           () => {
             console.log('Użytkownik jest zalogowany');
@@ -52,7 +52,7 @@ export class LoginComponent {
 //     private formBuilder: FormBuilder,
 //     private route: ActivatedRoute,
 //     private router: Router,
-//     private accountService: AccountService,
+//     private accountService: AuthService,
 //     private alertService: AlertService
 //   ) {
 //   }
