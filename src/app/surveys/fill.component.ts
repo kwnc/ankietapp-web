@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {SurveyService} from '../services';
+import {Survey} from '../models/survey';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-fill',
@@ -6,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FillComponent implements OnInit {
 
-  constructor() { }
+  survey: Survey;
+
+  constructor(
+    private route: ActivatedRoute,
+    private surveyService: SurveyService
+  ) {
+  }
 
   ngOnInit(): void {
+    this.getSurvey();
+  }
+
+  getSurvey(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.surveyService.getSurvey(id).subscribe(survey => this.survey = survey);
   }
 
 }
