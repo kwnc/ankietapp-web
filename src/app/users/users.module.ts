@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 
 import {UsersRoutingModule} from './users-routing.module';
 import {LayoutComponent} from './layout.component';
-import {ListComponent} from './list.component';
+import {AccountsComponent} from './accounts.component';
 import {AddEditComponent} from './add-edit.component';
 import {MaterialModule} from '../material.module';
 
@@ -17,7 +17,7 @@ import {MaterialModule} from '../material.module';
   ],
   declarations: [
     LayoutComponent,
-    ListComponent,
+    AccountsComponent,
     AddEditComponent
   ]
 })
