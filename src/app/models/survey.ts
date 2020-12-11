@@ -1,12 +1,12 @@
+import {Question} from '@app/models/question';
+import {UserSurveyResponse} from '@app/models/user-survey-response';
+
 export class Survey {
   id: number;
   name: string;
   description: string;
-  dueDate: string;
-
-  constructor(name: string, description: string, dueDate: string) {
-    this.name = name;
-    this.description = description;
-    this.dueDate = dueDate;
-  }
+  ispublic: boolean;
+  dueDate: Date;
+  questions: Question[];
+  userSurveyResponses: UserSurveyResponse[];
 }

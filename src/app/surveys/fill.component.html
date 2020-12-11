@@ -1,1 +1,3 @@
-<h1>Wypełnij ankietę</h1>
+<div *ngIf="survey">
+  <h1>Wypełniasz ankietę {{survey.name | uppercase}}</h1>
+</div>
