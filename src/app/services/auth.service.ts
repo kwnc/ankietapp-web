@@ -1,8 +1,8 @@
 ﻿import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {finalize, map, mapTo, tap, catchError} from 'rxjs/operators';
+import {map, mapTo, tap, catchError} from 'rxjs/operators';
 
 import {environment} from '@environments/environment';
 import {Account} from '@app/models';
@@ -15,6 +15,10 @@ export class AuthService {
   public account: Observable<Account>;
   private loggedUser: string;
   private readonly JWT_TOKEN = 'JWT_TOKEN';
+
+  httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+  };
 
   constructor(
     private router: Router,
@@ -107,13 +111,12 @@ export class AuthService {
       }));
   }
 
-  delete(id: string): Observable<object> {
-    return this.http.delete(`${environment.backendUrl}/${id}`)
-      .pipe(finalize(() => {
-        // auto logout if the logged in account was deleted
-        if (id === this.accountValue.id) {
-          this.logout();
-        }
-      }));
+  /** DELETE: delete the account from the server */
+  deleteAccount(account: Account): Observable<Account> {
+    const id = typeof account === 'number' ? account : account.id;
+
+    return this.http.delete<Account>(`${environment.backendUrl}/users/${id}`, this.httpOptions).pipe(
+      catchError(this.errorService.handleError<Account>('deleteAccount'))
+    );
   }
 }

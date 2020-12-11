@@ -1,0 +1,26 @@
+﻿<h1>Użytkownicy</h1>
+<a routerLink="add">
+  <button mat-raised-button color="primary">Dodaj użytkownika</button>
+</a>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 30%">Email</th>
+    <th style="width: 10%"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let account of accounts">
+    <td>{{account.email}}</td>
+    <td style="white-space: nowrap">
+      <a routerLink="edit/{{account.id}}" class="btn btn-sm btn-primary mr-1">Edytuj</a>
+      <button mat-raised-button color="warn" title="Usuń użytkownika" (click)="delete(account)">Usuń</button>
+    </td>
+  </tr>
+  <tr *ngIf="!accounts">
+    <td colspan="4" class="text-center">
+      <span class="spinner-border spinner-border-lg align-center"></span>
+    </td>
+  </tr>
+  </tbody>
+</table>
