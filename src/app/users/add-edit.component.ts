@@ -1,99 +1,101 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+﻿import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {first} from 'rxjs/operators';
 
-import { AuthService, AlertService } from '@app/services';
+import {AuthService, AlertService} from '@app/services';
 
-@Component({ templateUrl: 'add-edit.component.html' })
+@Component({templateUrl: 'add-edit.component.html'})
 export class AddEditComponent implements OnInit {
-    form: FormGroup;
-    id: string;
-    isAddMode: boolean;
-    loading = false;
-    submitted = false;
+  form: FormGroup;
+  id: string;
+  isAddMode: boolean;
+  loading = false;
+  submitted = false;
 
-    constructor(
-        private formBuilder: FormBuilder,
-        private route: ActivatedRoute,
-        private router: Router,
-        private accountService: AuthService,
-        private alertService: AlertService
-    ) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private accountService: AuthService,
+    private alertService: AlertService
+  ) {
+  }
 
-    ngOnInit() {
-        this.id = this.route.snapshot.params['id'];
-        this.isAddMode = !this.id;
+  ngOnInit() {
+    this.id = this.route.snapshot.params['id'];
+    this.isAddMode = !this.id;
 
-        // password not required in edit mode
-        const passwordValidators = [Validators.minLength(6)];
-        if (this.isAddMode) {
-            passwordValidators.push(Validators.required);
-        }
-
-        this.form = this.formBuilder.group({
-            firstName: ['', Validators.required],
-            lastName: ['', Validators.required],
-            username: ['', Validators.required],
-            password: ['', passwordValidators]
-        });
-
-        if (!this.isAddMode) {
-            this.accountService.getById(this.id)
-                .pipe(first())
-                .subscribe(x => this.form.patchValue(x));
-        }
+    // password not required in edit mode
+    const passwordValidators = [Validators.minLength(6)];
+    if (this.isAddMode) {
+      passwordValidators.push(Validators.required);
     }
 
-    // convenience getter for easy access to form fields
-    get f() { return this.form.controls; }
+    this.form = this.formBuilder.group({
+      email: ['', Validators.required],
+      isAdmin: [false],
+      password: ['', passwordValidators]
+    });
 
-    onSubmit() {
-        this.submitted = true;
+    if (!this.isAddMode) {
+      this.accountService.getById(this.id)
+        .pipe(first())
+        .subscribe(x => this.form.patchValue(x));
+    }
+  }
 
-        // reset alerts on submit
-        this.alertService.clear();
+  // convenience getter for easy access to form fields
+  get f() {
+    return this.form.controls;
+  }
 
-        // stop here if form is invalid
-        if (this.form.invalid) {
-            return;
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    if (this.isAddMode) {
+      this.createUser();
+    } else {
+      this.updateUser();
+    }
+  }
+
+  private createUser() {
+    this.accountService.register(this.form.value)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.alertService.success('Użytkownik dodany pomyślnie', {keepAfterRouteChange: true});
+          this.router.navigate(['../'], {relativeTo: this.route});
+        },
+        error: error => {
+          this.alertService.error(error);
+          this.loading = false;
         }
+      });
+  }
 
-        this.loading = true;
-        if (this.isAddMode) {
-            this.createUser();
-        } else {
-            this.updateUser();
+  private updateUser() {
+    this.accountService.update(this.id, this.form.value)
+      .pipe(first())
+      .subscribe({
+        next: () => {
+          this.alertService.success('Użytkownik zauktualizowany pomyślnie', {keepAfterRouteChange: true});
+          this.router.navigate(['../../'], {relativeTo: this.route});
+        },
+        error: error => {
+          this.alertService.error(error);
+          this.loading = false;
         }
-    }
-
-    private createUser() {
-        this.accountService.register(this.form.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Account added successfully', { keepAfterRouteChange: true });
-                    this.router.navigate(['../'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                }
-            });
-    }
-
-    private updateUser() {
-        this.accountService.update(this.id, this.form.value)
-            .pipe(first())
-            .subscribe({
-                next: () => {
-                    this.alertService.success('Update successful', { keepAfterRouteChange: true });
-                    this.router.navigate(['../../'], { relativeTo: this.route });
-                },
-                error: error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                }
-            });
-    }
+      });
+  }
 }
