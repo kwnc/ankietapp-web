@@ -1,51 +1,36 @@
 ﻿<h1 *ngIf="isAddMode">Dodaj użytkownika</h1>
 <h1 *ngIf="!isAddMode">Edytuj użytkownika</h1>
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="form-row">
-    <div class="form-group col">
-      <label for="firstName">Imię</label>
-      <input type="text" formControlName="firstName" class="form-control"
-             [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }"/>
-      <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
-        <div *ngIf="f.firstName.errors.required">Imię jest wymagane</div>
+<div class="card-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-row">
+      <div class="form-group col">
+        <mat-form-field>
+          <input matInput type="email" id="email" placeholder="Email" formControlName="email" class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.email.errors }"/>
+          <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">Email jest wymagana</div>
+          </div>
+        </mat-form-field>
+      </div>
+      <div class="form-group col">
+        <!--        <p *ngIf="!isAddMode">Zostaw jeśli chcesz zachować takie samo hasło</p>-->
+        <mat-form-field>
+          <input matInput type="password" id="password" placeholder="Hasło" formControlName="password"
+                 class="form-control"
+                 [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
+          <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Hasło jest wymagane</div>
+            <div *ngIf="f.password.errors.minlength">Hasło powinno mieć przynajmniej 6 liter</div>
+          </div>
+        </mat-form-field>
       </div>
     </div>
-    <div class="form-group col">
-      <label for="lastName">Nazwisko</label>
-      <input type="text" formControlName="lastName" class="form-control"
-             [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }"/>
-      <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
-        <div *ngIf="f.lastName.errors.required">Nazwisko jest wymagane</div>
-      </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Zapisz
+      </button>
+      <a routerLink="/users" class="btn btn-link">Anuluj</a>
     </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col">
-      <label for="username">Nazwa użytkownika</label>
-      <input type="text" formControlName="username" class="form-control"
-             [ngClass]="{ 'is-invalid': submitted && f.username.errors }"/>
-      <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-        <div *ngIf="f.username.errors.required">Nazwa użytkownika jest wymagana</div>
-      </div>
-    </div>
-    <div class="form-group col">
-      <label for="password">
-        Hasło
-        <em *ngIf="!isAddMode">(Zostaw puste aby zachować takie samo hasło)</em>
-      </label>
-      <input type="password" formControlName="password" class="form-control"
-             [ngClass]="{ 'is-invalid': submitted && f.password.errors }"/>
-      <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-        <div *ngIf="f.password.errors.required">Hasło jest wymagane</div>
-        <div *ngIf="f.password.errors.minlength">Hasło powinno mieć przynajmniej 6 liter</div>
-      </div>
-    </div>
-  </div>
-  <div class="form-group">
-    <button [disabled]="loading" class="btn btn-primary">
-      <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-      Zapisz
-    </button>
-    <a routerLink="/users" class="btn btn-link">Anuluj</a>
-  </div>
-</form>
+  </form>
+</div>
