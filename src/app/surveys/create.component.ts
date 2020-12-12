@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
 
-import {SurveyService, AlertService} from '@app/services';
+import {SurveyService, AlertService, AuthService} from '@app/services';
 
 import {Survey} from '../models/survey/survey';
 import {Question} from '../models/survey/question';
@@ -15,6 +15,7 @@ export class CreateComponent implements OnInit {
   loading = false;
   submitted = false;
 
+  account: Account;
   survey: Survey;
 
   constructor(
@@ -22,6 +23,7 @@ export class CreateComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private surveyService: SurveyService,
+    private authService: AuthService,
     private alertService: AlertService,
     private location: Location
   ) {
