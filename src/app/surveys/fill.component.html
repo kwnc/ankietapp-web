@@ -1,3 +1,5 @@
 <div *ngIf="survey">
-  <h1>Wypełniasz ankietę {{survey.name | uppercase}}</h1>
+  <h1>Wypełniasz ankietę <span>{{survey.name | uppercase}}</span></h1>
+
+  <button mat-stroked-button (click)="goBack()">Wróć</button>
 </div>

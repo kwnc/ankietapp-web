@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {SurveyService} from '../services';
 import {Survey} from '../models/survey/survey';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-fill',
@@ -13,7 +14,9 @@ export class FillComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private surveyService: SurveyService
+    private router: Router,
+    private surveyService: SurveyService,
+    private location: Location
   ) {
   }
 
@@ -26,4 +29,7 @@ export class FillComponent implements OnInit {
     this.surveyService.getSurvey(id).subscribe(survey => this.survey = survey);
   }
 
+  goBack(): void {
+    this.location.back();
+  }
 }
