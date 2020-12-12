@@ -1,12 +1,13 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup, FormArray, Validators, FormControl} from '@angular/forms';
 
-import { SurveyService, AlertService } from '@app/services';
+import {SurveyService, AlertService} from '@app/services';
 
-import { Survey } from '../models/survey/survey';
-import { Question } from '../models/survey/question';
+import {Survey} from '../models/survey/survey';
+import {Question} from '../models/survey/question';
 
 @Component({templateUrl: 'create.component.html'})
 export class CreateComponent implements OnInit {
@@ -17,12 +18,14 @@ export class CreateComponent implements OnInit {
   survey: Survey;
 
   constructor(
-      private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
-      private router: Router,
-      private surveyService: SurveyService,
-      private alertService: AlertService
-  ) { }
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private surveyService: SurveyService,
+    private alertService: AlertService,
+    private location: Location
+  ) {
+  }
 
   textType = 'Pytanie otwarte';
   dateType = 'Data';
@@ -57,7 +60,7 @@ export class CreateComponent implements OnInit {
 
   isClosedQuestion(index: number): boolean {
     return this.getQuestions().at(index).get('type').value === this.multipleChoiceType ||
-    this.getQuestions().at(index).get('type').value === this.singleChoice;
+      this.getQuestions().at(index).get('type').value === this.singleChoice;
   }
 
   onTypeChange(index: number, type: string): void {
@@ -66,8 +69,7 @@ export class CreateComponent implements OnInit {
       if (this.getChoices(index).length === 0) {
         this.addChoice(index);
       }
-    }
-    else {
+    } else {
       if (this.getChoices(index).length > 0) {
         this.getChoices(index).clear();
       }
@@ -88,12 +90,12 @@ export class CreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
-        name: ['', Validators.required],
-        description: ['', Validators.required],
-        public: [false, Validators.required],
-        users: new FormControl('', [Validators.nullValidator]),
-        dueDate: ['', Validators.required],
-        questions: new FormArray([])
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      public: [false, Validators.required],
+      users: new FormControl('', [Validators.nullValidator]),
+      dueDate: ['', Validators.required],
+      questions: new FormArray([])
     });
     this.addQuestion();
   }
@@ -149,16 +151,20 @@ export class CreateComponent implements OnInit {
 
     this.surveyService.create(newSurvey)
       .subscribe(
-      data => {
-        console.log(data);
-        const returnUrl = '/home';
-        this.router.navigateByUrl(returnUrl);
-      },
-      err => {
-        console.log(err);
-        this.alertService.error(err);
-        this.loading = false;
-      }
-    );
+        data => {
+          console.log(data);
+          const returnUrl = '/home';
+          this.router.navigateByUrl(returnUrl);
+        },
+        err => {
+          console.log(err);
+          this.alertService.error(err);
+          this.loading = false;
+        }
+      );
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 }
