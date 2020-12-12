@@ -15,7 +15,6 @@ export class CreateComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  account: Account;
   survey: Survey;
 
   constructor(

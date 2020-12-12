@@ -32,31 +32,10 @@
     <label for="public" class="form-check-label">Publiczna</label>
   </div>
   <div *ngIf="!f.public.value">
-
-    <mat-form-field class="example-chip-list full-field">
-      <mat-label>Użytkownicy, którzy wypełnią ankietę</mat-label>
-      <mat-chip-list #chipList aria-label="Fruit selection">
-        <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
-                  [removable]="removable" (removed)="remove(fruit)">
-          {{fruit.name}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-        <input placeholder="New fruit..."
-               [matChipInputFor]="chipList"
-               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-               [matChipInputAddOnBlur]="addOnBlur"
-               (matChipInputTokenEnd)="add($event)">
-      </mat-chip-list>
+    <mat-form-field class="full-field">
+      <input matInput type="text" id="users" placeholder="Użytkownicy, którzy wypełnią ankietę" formControlName="users"
+             class="form-control" [ngClass]="{ 'is-invalid': submitted && f.users.errors }"/>
     </mat-form-field>
-
-
-    <div class="form-group">
-      <label>Użytkownicy, którzy wypełnią ankietę</label>
-      <input type="text" formControlName="users" class="form-control"
-             [ngClass]="{ 'is-invalid': submitted && f.users.errors }"/>
-    </div>
-
-
   </div>
 
   <div formArrayName="questions">
@@ -85,7 +64,7 @@
           <input type="text" formControlName="description" class="form-control"
                  [ngClass]="{ 'is-invalid': submitted && question.get('description').errors }">
           <div *ngIf="question.get('description').errors" class="invalid-feedback">
-            <div *ngIf="question.get('description').errors.required">To pole jest wymaganey</div>
+            <div *ngIf="question.get('description').errors.required">To pole jest wymagane</div>
           </div>
         </div>
         <div *ngIf="isClosedQuestion(i)">
@@ -105,7 +84,7 @@
                 <input type="text" [formControlName]="j" class="form-control"
                        [ngClass]="{ 'is-invalid': submitted && choice.errors }">
                 <div *ngIf="choice.errors" class="invalid-feedback">
-                  <div *ngIf="choice.errors.required">To pole jest wymaganey</div>
+                  <div *ngIf="choice.errors.required">To pole jest wymagane</div>
                 </div>
               </div>
             </div>
