@@ -1,6 +1,6 @@
 ﻿import {Component, OnInit} from '@angular/core';
 
-import {Survey} from '../models/survey';
+import {Survey} from '../models/survey/survey';
 import {SurveyService} from '../services';
 
 @Component({templateUrl: 'list.component.html'})
