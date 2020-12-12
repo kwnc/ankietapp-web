@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
-import {NewSurvey} from '../models/survey-creation/new-survey';
+import {Survey} from '../models/survey/survey';
 import {environment} from '@environments/environment';
 import {Observable, of} from 'rxjs';
-import {Survey} from '@app/models/survey';
 import {catchError} from 'rxjs/operators';
 import {ErrorService} from '@app/services/error.service';
 import {AuthService} from './auth.service';
@@ -25,9 +24,9 @@ export class SurveyService {
   ) {
   }
 
-  create(newSurvey: NewSurvey) {
+  create(newSurvey: Survey) {
     const token = this.accountService.getJwtToken();
-    return this.http.post<NewSurvey>(`${environment.backendUrl}/surveys`, newSurvey, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)});
+    return this.http.post<Survey>(`${environment.backendUrl}/surveys`, newSurvey, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)});
   }
 
   /** GET surveys from the server */

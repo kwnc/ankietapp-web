@@ -1,12 +1,12 @@
-import { NewSurveyQuestion } from './new-survey-question';
+import { Question } from './question';
 
-export class NewSurvey {
+export class Survey {
     name: string;
     description: string;
     dueDate: string;
     public: boolean;
     users: string[];
-    questions: NewSurveyQuestion[];
+    questions: Question[];
 
     constructor() {}
 }

@@ -1,4 +1,4 @@
-export class NewSurveyQuestion {
+export class Question {
   description: string;
   type: string;
   choices: string[];
