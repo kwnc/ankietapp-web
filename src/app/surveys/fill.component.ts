@@ -3,6 +3,7 @@ import {SurveyService} from '../services';
 import {Survey} from '../models/survey/survey';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {UserSurvey} from '../models/user-survey';
 
 @Component({
   selector: 'app-fill',
@@ -10,7 +11,7 @@ import {Location} from '@angular/common';
 })
 export class FillComponent implements OnInit {
 
-  survey: Survey;
+  userSurvey: UserSurvey;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,12 +22,12 @@ export class FillComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getSurvey();
+    this.getUserSurvey();
   }
 
-  getSurvey(): void {
+  getUserSurvey(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.surveyService.getSurvey(id).subscribe(survey => this.survey = survey);
+    this.surveyService.getUserSurvey(id).subscribe(userSurvey => this.userSurvey = userSurvey);
   }
 
   goBack(): void {

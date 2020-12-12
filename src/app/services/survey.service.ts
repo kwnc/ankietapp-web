@@ -7,6 +7,7 @@ import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {ErrorService} from '@app/services/error.service';
 import {AuthService} from './auth.service';
+import {UserSurvey} from '@app/models/user-survey';
 
 @Injectable({
   providedIn: 'root'
@@ -36,11 +37,11 @@ export class SurveyService {
       .pipe(catchError(this.errorService.handleError<Survey[]>('getSurveys', [])));
   }
 
-  /** GET survey by id. Will 404 if id not found */
-  getSurvey(id: number): Observable<Survey> {
+  /** GET survey by id */
+  getUserSurvey(id: number): Observable<UserSurvey> {
     const token = this.authService.getJwtToken();
-    return this.http.get<Survey>(`${environment.backendUrl}/surveys/${id}`, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
-      .pipe(catchError(this.errorService.handleError<Survey>(`getSurvey id=${id}`)));
+    return this.http.get<UserSurvey>(`${environment.backendUrl}/surveys/${id}`, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
+      .pipe(catchError(this.errorService.handleError<UserSurvey>(`getUserSurvey id=${id}`)));
   }
 
   /** GET surveys whose name contains search term */

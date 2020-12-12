@@ -1,12 +1,14 @@
-import { Question } from './question';
+import {Question} from './question';
 
 export class Survey {
-    name: string;
-    description: string;
-    dueDate: string;
-    public: boolean;
-    users: string[];
-    questions: Question[];
+  id: number;
+  name: string;
+  description: string;
+  dueDate: string;
+  public: boolean;
+  users: string[];
+  questions: Question[];
 
-    constructor() {}
+  constructor() {
+  }
 }
