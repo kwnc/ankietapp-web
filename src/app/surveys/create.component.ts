@@ -5,8 +5,8 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@ang
 
 import { SurveyService, AlertService } from '@app/services';
 
-import { NewSurvey } from '@app/models/survey-creation/new-survey';
-import { NewSurveyQuestion } from '@app/models/survey-creation/new-survey-question';
+import { Survey } from '../models/survey/survey';
+import { Question } from '../models/survey/question';
 
 @Component({templateUrl: 'create.component.html'})
 export class CreateComponent implements OnInit {
@@ -14,7 +14,7 @@ export class CreateComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  newSurvey: NewSurvey;
+  survey: Survey;
 
   constructor(
       private formBuilder: FormBuilder,
@@ -111,7 +111,7 @@ export class CreateComponent implements OnInit {
 
     this.loading = true;
 
-    const newSurvey = new NewSurvey();
+    const newSurvey = new Survey();
     newSurvey.name = this.formGroup.get('name').value;
     newSurvey.description = this.formGroup.get('description').value;
     newSurvey.dueDate = this.formGroup.get('dueDate').value;
@@ -126,7 +126,7 @@ export class CreateComponent implements OnInit {
     const questionsArray = this.formGroup.get('questions') as FormArray;
     for (let i = 0; i < questionsArray.length; i++) {
       const questionGroup = questionsArray.at(i);
-      const newSurveyQuestion = new NewSurveyQuestion();
+      const newSurveyQuestion = new Question();
       newSurveyQuestion.description = questionGroup.get('description').value;
       const typeDescription = questionGroup.get('type');
       if (typeDescription.value === this.textType) {
