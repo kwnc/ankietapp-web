@@ -7,10 +7,10 @@ import {UserSurvey} from '../models/user-survey';
 
 @Component({
   selector: 'app-fill',
-  templateUrl: './fill.component.html'
+  templateUrl: './fill.component.html',
 })
-export class FillComponent implements OnInit {
 
+export class FillComponent implements OnInit {
   userSurvey: UserSurvey;
 
   constructor(
@@ -18,8 +18,7 @@ export class FillComponent implements OnInit {
     private router: Router,
     private surveyService: SurveyService,
     private location: Location
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.getUserSurvey();
@@ -27,7 +26,15 @@ export class FillComponent implements OnInit {
 
   getUserSurvey(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.surveyService.getUserSurvey(id).subscribe(userSurvey => this.userSurvey = userSurvey);
+    this.surveyService.getUserSurvey(id).subscribe(userSurvey => {
+      console.log(userSurvey); 
+      return this.userSurvey = userSurvey;
+    });
+  }
+
+  getIdQuestion(id:number){ 
+    id+=1;
+    return id;
   }
 
   goBack(): void {

@@ -5,6 +5,5 @@ export class Question {
   choices: string[];
   sortOrder: number;
 
-  constructor() {
-  }
+  constructor() {}
 }
