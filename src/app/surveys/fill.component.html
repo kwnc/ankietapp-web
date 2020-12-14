@@ -41,17 +41,15 @@
 
           <div *ngIf="question.type === 'singleChoice'">
             <div *ngFor="let choice of question.choices">
+              <mat-checkbox>{{choice.value}}</mat-checkbox>
             </div>
           </div>
 
           <div *ngIf="question.type === 'multipleChoice'">
-            <mat-checkbox class="example-margin">ans1</mat-checkbox>
-            <mat-checkbox class="example-margin">ans2</mat-checkbox>
-            <mat-checkbox class="example-margin">ans3</mat-checkbox>
+            <div *ngFor="let choice of question['choices']">
+              <mat-checkbox>{{choice.value}}</mat-checkbox>
+            </div>
           </div>
-          <!-- <ul *ngFor="let item of choices">
-            <li>{{item.value}}</li>
-          </ul> -->
         </mat-card-content>
       </div>
     </mat-card>

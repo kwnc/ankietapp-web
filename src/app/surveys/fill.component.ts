@@ -3,6 +3,7 @@ import {SurveyService} from '../services';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {UserSurvey} from '../models/user-survey';
+import {Question} from '../models/survey/question';
 
 @Component({
   selector: 'app-fill',
