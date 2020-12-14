@@ -1,11 +1,13 @@
 <div *ngIf="userSurvey">
-  <h1>Wypełniasz ankietę <span>{{userSurvey.survey.name | uppercase}}</span></h1>
+  <h2 class="mat-accent">{{userSurvey.survey.name | uppercase}}</h2>
+  <h3>{{userSurvey.survey.description}}</h3>
   <br/>
   <mat-card>
-    <li>Opis ankiety: {{userSurvey.survey.description}}</li>
-    <li>Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0,10)}}</li>
+    <li>Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0, 10)}}</li>
     <li *ngIf="userSurvey.survey.public; else elseBlock"> Ankieta jest publiczna.</li>
-    <ng-template #elseBlock><li>Ankieta nie jest publiczna. Jest wyłącznie dla określonych użytkowników!</li></ng-template>
+    <ng-template #elseBlock>
+      <li>Ankieta nie jest publiczna. Jest wyłącznie dla określonych użytkowników!</li>
+    </ng-template>
   </mat-card>
   <br/>
   <br/>
@@ -13,49 +15,54 @@
   <br/>
   <br/>
 
-  <div *ngFor="let item of userSurvey.survey.questions">
-      <mat-card style="background-color:#ddd;">
-        <div style="display:flex; justify-content:center;">
-          <div style="background-color:#ff4081; width:40px; padding: 10px; border-radius: 50%; text-align:center; font-weight: bold;">{{getIdQuestion(1)}}</div>
+  <div *ngFor="let question of userSurvey.survey.questions">
+    <mat-card style="background-color:#ddd;">
+      <div style="display:flex; justify-content:center;">
+        <h4 class="mat-accent">Pytanie {{question.id}}</h4>
       </div>
-        <h4>{{item.description}}</h4>
-        <li>type:::: {{item.type}}</li>
+      <h4>{{question.description}}</h4>
       <div>
         <mat-card-content>
-              <div *ngIf="item.type === 'text' || item.type === 'date'">
-                <mat-form-field class="w-100">
-                  <mat-label>Twoja odpowiedź</mat-label>
-                  <textarea matInput placeholder="" rows="7"></textarea>
-                </mat-form-field>
-              </div>
-        
-              <div *ngIf="item.type === 'singleChoice'">
-                singleChoice
-              </div>
-            
-              <div *ngIf="item.type === 'multipleChoice'">
-                multipleChoice
-                <mat-checkbox class="example-margin">ans1</mat-checkbox>
-                <mat-checkbox class="example-margin">ans2</mat-checkbox>
-                <mat-checkbox class="example-margin">ans3</mat-checkbox>
-              </div>
-                ----------------------------
-              <!-- <ul *ngFor="let item of choices">
-                <li>{{item.value}}</li>
-              </ul> -->
-              <p>odpowiedziiiii wyswietlic ://////////</p>
+          <div *ngIf="question.type === 'text'">
+            <mat-form-field class="w-100">
+              <mat-label>Twoja odpowiedź</mat-label>
+              <textarea matInput placeholder="" rows="7"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="question.type == 'date'">
+            <mat-form-field appearance="fill">
+              <mat-label>Wybierz datę</mat-label>
+              <input matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="question.type === 'singleChoice'">
+            <div *ngFor="let choice of question.choices">
+            </div>
+          </div>
+
+          <div *ngIf="question.type === 'multipleChoice'">
+            <mat-checkbox class="example-margin">ans1</mat-checkbox>
+            <mat-checkbox class="example-margin">ans2</mat-checkbox>
+            <mat-checkbox class="example-margin">ans3</mat-checkbox>
+          </div>
+          <!-- <ul *ngFor="let item of choices">
+            <li>{{item.value}}</li>
+          </ul> -->
         </mat-card-content>
       </div>
     </mat-card>
     <br/>
-
   </div>
 
-  <div  class="d-flex justify-content-end">
-    <button mat-raised-button color="primary">Submit</button>
+  <div class="d-flex justify-content-end">
+    <button mat-raised-button color="primary">Wyślij ankietę!</button>
   </div>
   <br/>
-  
+
   <button mat-stroked-button (click)="goBack()">Wróć</button>
 </div>
 
