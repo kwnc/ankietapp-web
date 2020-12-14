@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "angular-registration-login-example"
+  "defaultProject": "angular-registration-login-example",
+  "cli": {
+    "analytics": "832190b7-7fe3-4bd2-ab03-2073903d8cbf"
+  }
 }

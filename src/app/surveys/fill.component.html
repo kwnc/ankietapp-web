@@ -1,5 +1,69 @@
 <div *ngIf="userSurvey">
-  <h1>Wypełniasz ankietę <span>{{userSurvey.survey.name | uppercase}}</span></h1>
+  <h2 class="mat-accent">{{userSurvey.survey.name | uppercase}}</h2>
+  <h3>{{userSurvey.survey.description}}</h3>
+  <br/>
+  <mat-card>
+    <li>Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0, 10)}}</li>
+    <li *ngIf="userSurvey.survey.public; else elseBlock"> Ankieta jest publiczna.</li>
+    <ng-template #elseBlock>
+      <li>Ankieta nie jest publiczna. Jest wyłącznie dla określonych użytkowników!</li>
+    </ng-template>
+  </mat-card>
+  <br/>
+  <br/>
+  <hr/>
+  <br/>
+  <br/>
+
+  <div *ngFor="let question of userSurvey.survey.questions">
+    <mat-card style="background-color:#ddd;">
+      <div style="display:flex; justify-content:center;">
+        <h4 class="mat-accent">Pytanie {{question.id}}</h4>
+      </div>
+      <h4>{{question.description}}</h4>
+      <div>
+        <mat-card-content>
+          <div *ngIf="question.type === 'text'">
+            <mat-form-field class="w-100">
+              <mat-label>Twoja odpowiedź</mat-label>
+              <textarea matInput placeholder="" rows="7"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="question.type == 'date'">
+            <mat-form-field appearance="fill">
+              <mat-label>Wybierz datę</mat-label>
+              <input matInput [matDatepicker]="picker">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="question.type === 'singleChoice'">
+            <div *ngFor="let choice of question.choices">
+              <mat-checkbox>{{choice.value}}</mat-checkbox>
+            </div>
+          </div>
+
+          <div *ngIf="question.type === 'multipleChoice'">
+            <div *ngFor="let choice of question['choices']">
+              <mat-checkbox>{{choice.value}}</mat-checkbox>
+            </div>
+          </div>
+        </mat-card-content>
+      </div>
+    </mat-card>
+    <br/>
+  </div>
+
+  <div class="d-flex justify-content-end">
+    <button mat-raised-button color="primary">Wyślij ankietę!</button>
+  </div>
+  <br/>
 
   <button mat-stroked-button (click)="goBack()">Wróć</button>
 </div>
+
+
+
+

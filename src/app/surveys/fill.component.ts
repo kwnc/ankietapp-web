@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {SurveyService} from '../services';
-import {Survey} from '../models/survey/survey';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {UserSurvey} from '../models/user-survey';
+import {Question} from '../models/survey/question';
 
 @Component({
   selector: 'app-fill',
-  templateUrl: './fill.component.html'
+  templateUrl: './fill.component.html',
 })
-export class FillComponent implements OnInit {
 
+export class FillComponent implements OnInit {
   userSurvey: UserSurvey;
 
   constructor(
@@ -27,8 +27,16 @@ export class FillComponent implements OnInit {
 
   getUserSurvey(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.surveyService.getUserSurvey(id).subscribe(userSurvey => this.userSurvey = userSurvey);
+    this.surveyService.getUserSurvey(id).subscribe(userSurvey => {
+      console.log(userSurvey);
+      return this.userSurvey = userSurvey;
+    });
   }
+
+  // getIdQuestion(id: number) {
+  //   id += 1;
+  //   return id;
+  // }
 
   goBack(): void {
     this.location.back();

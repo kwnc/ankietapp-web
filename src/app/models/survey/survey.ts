@@ -9,6 +9,5 @@ export class Survey {
   users: string[];
   questions: Question[];
 
-  constructor() {
-  }
+  constructor() {}
 }
