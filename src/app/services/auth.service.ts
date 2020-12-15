@@ -14,7 +14,7 @@ export class AuthService {
   private accountSubject: BehaviorSubject<Account>;
   public account: Observable<Account>;
   private loggedUser: string;
-  private readonly JWT_TOKEN = 'JWT_TOKEN';
+  private JWT_TOKEN = 'JWT_TOKEN';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -44,6 +44,12 @@ export class AuthService {
         }));
   }
 
+  public logout(): void {
+    this.JWT_TOKEN = null;
+    this.loggedUser = null;
+    this.router.navigate(['/account/login']);
+  }
+
   private doLoginUser(username: string, tokens: any): void {
     this.loggedUser = username;
     this.storeTokens(tokens);
@@ -52,13 +58,6 @@ export class AuthService {
   private storeTokens(tokens: Tokens): void {
     console.log(tokens);
     localStorage.setItem(this.JWT_TOKEN, tokens.idToken);
-  }
-
-  logout(): void {
-    this.http.post<any>(`${environment.backendUrl}/revoke-token`, {}, {withCredentials: true}).subscribe();
-    // this.stopRefreshTokenTimer();
-    this.accountSubject.next(null);
-    this.router.navigate(['/account/login']);
   }
 
   isLoggedIn(): boolean {
