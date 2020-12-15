@@ -4,7 +4,7 @@
   <br/>
   <mat-card>
     <li>Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0, 10)}}</li>
-    <li *ngIf="userSurvey.survey.public; else elseBlock"> Ankieta jest publiczna.</li>
+    <li *ngIf="userSurvey.survey.public; else elseBlock">Ankieta jest publiczna.</li>
     <ng-template #elseBlock>
       <li>Ankieta nie jest publiczna. Jest wyłącznie dla określonych użytkowników!</li>
     </ng-template>
@@ -18,7 +18,7 @@
   <div *ngFor="let question of userSurvey.survey.questions">
     <mat-card style="background-color:#ddd;">
       <div style="display:flex; justify-content:center;">
-        <h4 class="mat-accent">Pytanie {{question.id}}</h4>
+        <h4 class="mat-accent">Pytanie {{question.sortOrder}}</h4>
       </div>
       <h4>{{question.description}}</h4>
       <div>
