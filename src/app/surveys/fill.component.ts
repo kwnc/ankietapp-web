@@ -5,10 +5,19 @@ import {Location} from '@angular/common';
 import {UserSurvey} from '../models/user-survey';
 import {Question} from '../models/survey/question';
 
+// import {NgModule} from '@angular/core';
+// import {RadioOverviewExample} from './RadioOverviewExample.component'
+
 @Component({
   selector: 'app-fill',
-  templateUrl: './fill.component.html',
+  templateUrl: './fill.component.html'
 })
+
+// @NgModule({
+//   exports: [
+//     RadioOverviewExample,
+//   ]
+// })
 
 export class FillComponent implements OnInit {
   userSurvey: UserSurvey;
@@ -31,12 +40,7 @@ export class FillComponent implements OnInit {
       console.log(userSurvey);
       return this.userSurvey = userSurvey;
     });
-  }
-
-  // getIdQuestion(id: number) {
-  //   id += 1;
-  //   return id;
-  // }
+  }                                                        
 
   goBack(): void {
     this.location.back();
