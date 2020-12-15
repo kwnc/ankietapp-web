@@ -7,9 +7,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
 
 const modules = [MatButtonModule, MatToolbarModule, MatIconModule, MatCardModule,
-  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatGridListModule];
+  MatFormFieldModule, MatInputModule, MatCheckboxModule, MatGridListModule,
+  MatSidenavModule, MatListModule];
 
 @NgModule({
   declarations: [],
