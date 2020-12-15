@@ -15,20 +15,20 @@
   <br/>
   <br/>
 
-  <div *ngFor="let question of userSurvey.survey.questions">
-    <mat-card style="background-color:#ddd;">
-      <div style="display:flex; justify-content:center;">
-        <h4 class="mat-accent">Pytanie {{question.sortOrder}}</h4>
-      </div>
-      <h4>{{question.description}}</h4>
-      <div>
-        <mat-card-content>
-          <div *ngIf="question.type === 'text'">
-            <mat-form-field class="w-100">
-              <mat-label>Twoja odpowiedź</mat-label>
-              <textarea matInput placeholder="" rows="7"></textarea>
-            </mat-form-field>
-          </div>
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div *ngFor="let question of userSurvey.survey.questions">
+      <mat-card style="background-color:#ddd;">
+        <div style="display:flex; justify-content:center;">
+          <h4 class="mat-accent">Pytanie {{question.sortOrder}}</h4>
+        </div>
+        <h4>{{question.description}}</h4>
+        <div>
+          <mat-card-content>
+            <div *ngIf="question.type === 'text'">
+              <mat-form-field class="full-field">
+                <input matInput type="text" placeholder="Twoja odpowiedź" formControlName="value" class="form-control">
+              </mat-form-field>
+            </div>
 
             <div *ngIf="question.type == 'date'">
               <mat-form-field appearance="fill">
@@ -41,10 +41,10 @@
 
             <div *ngIf="question.type === 'singleChoice'">
               <div *ngFor="let choice of question.choices">
-                  <div class="form-check">
-                    <input type="radio" class="form-check-input with-gap" id="radioGap1" name="groupOfRadioGap" mdbInput>
-                    <label class="form-check-label" for="radioGap1">{{choice.value}}</label>
-                  </div>
+                <div class="form-check">
+                  <input type="radio" class="form-check-input with-gap" id="radioGap1" name="groupOfRadioGap" mdbInput>
+                  <label class="form-check-label" for="radioGap1">{{choice.value}}</label>
+                </div>
               </div>
             </div>
 
@@ -62,9 +62,9 @@
     <div class="d-flex justify-content-end">
       <button mat-raised-button color="primary" (click)="goBack()">Wyślij ankietę!</button>
     </div>
-    <br/>
+  </form>
 
-    <button mat-stroked-button (click)="goBack()">Wróć</button>
+  <button mat-stroked-button (click)="goBack()">Wróć</button>
 </div>
 
 

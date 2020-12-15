@@ -3,23 +3,17 @@ import {SurveyService} from '../services';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
 import {UserSurvey} from '../models/user-survey';
-import {Question} from '../models/survey/question';
-
-// import {NgModule} from '@angular/core';
-// import {RadioOverviewExample} from './RadioOverviewExample.component'
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-fill',
   templateUrl: './fill.component.html'
 })
 
-// @NgModule({
-//   exports: [
-//     RadioOverviewExample,
-//   ]
-// })
-
 export class FillComponent implements OnInit {
+  formGroup: FormGroup;
+  submitted = false;
+
   userSurvey: UserSurvey;
 
   constructor(
@@ -28,6 +22,10 @@ export class FillComponent implements OnInit {
     private surveyService: SurveyService,
     private location: Location
   ) {
+  }
+
+  get f() {
+    return this.formGroup.controls;
   }
 
   ngOnInit(): void {
@@ -40,9 +38,13 @@ export class FillComponent implements OnInit {
       console.log(userSurvey);
       return this.userSurvey = userSurvey;
     });
-  }                                                        
+  }
 
   goBack(): void {
     this.location.back();
+  }
+
+  onSubmit() {
+
   }
 }
