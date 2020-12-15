@@ -30,39 +30,47 @@
             </mat-form-field>
           </div>
 
-          <div *ngIf="question.type == 'date'">
-            <mat-form-field appearance="fill">
-              <mat-label>Wybierz datę</mat-label>
-              <input matInput [matDatepicker]="picker">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          </div>
-
-          <div *ngIf="question.type === 'singleChoice'">
-            <div *ngFor="let choice of question.choices">
-              <mat-checkbox>{{choice.value}}</mat-checkbox>
+            <div *ngIf="question.type == 'date'">
+              <mat-form-field appearance="fill">
+                <mat-label>Wybierz datę</mat-label>
+                <input matInput [matDatepicker]="picker">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </div>
-          </div>
 
-          <div *ngIf="question.type === 'multipleChoice'">
-            <div *ngFor="let choice of question['choices']">
-              <mat-checkbox>{{choice.value}}</mat-checkbox>
+            <div *ngIf="question.type === 'singleChoice'">
+              <div *ngFor="let choice of question.choices">
+                  <div class="form-check">
+                    <input type="radio" class="form-check-input with-gap" id="radioGap1" name="groupOfRadioGap" mdbInput>
+                    <label class="form-check-label" for="radioGap1">{{choice.value}}</label>
+                  </div>
+              </div>
             </div>
-          </div>
-        </mat-card-content>
-      </div>
-    </mat-card>
+
+            <div *ngIf="question.type === 'multipleChoice'">
+              <div *ngFor="let choice of question['choices']">
+                <mat-checkbox>{{choice.value}}</mat-checkbox>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+      </mat-card>
+      <br/>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="primary" (click)="goBack()">Wyślij ankietę!</button>
+    </div>
     <br/>
-  </div>
 
-  <div class="d-flex justify-content-end">
-    <button mat-raised-button color="primary">Wyślij ankietę!</button>
-  </div>
-  <br/>
-
-  <button mat-stroked-button (click)="goBack()">Wróć</button>
+    <button mat-stroked-button (click)="goBack()">Wróć</button>
 </div>
+
+
+
+
+
 
 
 
