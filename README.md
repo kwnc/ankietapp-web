@@ -1,7 +1,7 @@
 # ankietapp-web
 
 ## Description
-Backend for the survey management app "ankietApp"
+Frontend for the survey management app "ankietApp"
 
 ## Prerequisite
 - Node js LTS https://nodejs.org/en/
