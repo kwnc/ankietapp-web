@@ -2,18 +2,17 @@
   <h2 class="mat-accent">{{userSurvey.survey.name | uppercase}}</h2>
   <h3>{{userSurvey.survey.description}}</h3>
   <br/>
-  <mat-card>
-    <li>Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0, 10)}}</li>
-    <li *ngIf="userSurvey.survey.public; else elseBlock">Ankieta jest publiczna.</li>
-    <ng-template #elseBlock>
-      <li>Ankieta nie jest publiczna. Jest wyłącznie dla określonych użytkowników!</li>
-    </ng-template>
-  </mat-card>
-  <br/>
-  <br/>
-  <hr/>
-  <br/>
-  <br/>
+  <mat-grid-list cols="2" rowHeight="20:1">
+    <mat-grid-tile>
+      Wygaśnie w dniu: {{userSurvey.survey.dueDate.slice(0, 10)}}
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <p *ngIf="userSurvey.survey.public; else elseBlock">Ankieta jest publiczna</p>
+      <ng-template #elseBlock>
+        <p>Ankieta jest prywatna ale jest dostępna dla Ciebie!</p>
+      </ng-template>
+    </mat-grid-tile>
+  </mat-grid-list>
 
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div *ngFor="let question of userSurvey.survey.questions">
