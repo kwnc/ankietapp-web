@@ -8,6 +8,7 @@ import {catchError} from 'rxjs/operators';
 import {ErrorService} from '@app/services/error.service';
 import {AuthService} from './auth.service';
 import {UserSurvey} from '@app/models/user-survey';
+import {SurveyResponse} from '@app/models/survey-response';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,13 @@ export class SurveyService {
     const token = this.authService.getJwtToken();
     return this.http.get<UserSurvey>(`${environment.backendUrl}/surveys/${id}`, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
       .pipe(catchError(this.errorService.handleError<UserSurvey>(`getUserSurvey id=${id}`)));
+  }
+
+  /** PUT survey */
+  sendSurveyResponse(userSurvey: UserSurvey, surveyResponse: SurveyResponse): Observable<any> {
+    const token = this.authService.getJwtToken();
+    return this.http.put(`${environment.backendUrl}/user-survey-response/${userSurvey.survey.id}`, surveyResponse, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)})
+      .pipe(catchError(this.errorService.handleError<any>(`sendSurveyResponse id=${userSurvey.survey.id}`)));
   }
 
   /** GET surveys whose name contains search term */
