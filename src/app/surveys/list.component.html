@@ -18,7 +18,7 @@
           <a routerLink="fill/{{survey.id}}">
             <button mat-raised-button color="accent">WYPEŁNIJ</button>
           </a>
-          <button mat-button>RAPORT</button>
+          <button mat-button (click)="raport(survey.id)">RAPORT</button>
         </mat-card-actions>
       </mat-card>
     </div>

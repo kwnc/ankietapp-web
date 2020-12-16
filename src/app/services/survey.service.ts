@@ -64,4 +64,10 @@ export class SurveyService {
       catchError(this.errorService.handleError<Survey[]>('searchSurveys', []))
     );
   }
+
+  getRaport(id: number): Observable<UserSurvey> {
+    const token = this.authService.getJwtToken();
+    return this.http.get<UserSurvey>(`${environment.backendUrl}/reports/${id}`, {headers: new HttpHeaders().set('Authorization', 'Bearer ' + token)});
+  }
+
 }
