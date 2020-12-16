@@ -60,9 +60,9 @@ export class FillComponent implements OnInit {
     this.alertService.clear();
 
     // stop here if form is invalid
-    if (this.formGroup.invalid) {
-      return;
-    }
+    // if (this.formGroup.invalid) {
+    //   return;
+    // }
 
     this.loading = true;
 
