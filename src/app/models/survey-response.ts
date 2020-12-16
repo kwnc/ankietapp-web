@@ -1,5 +1,5 @@
 import {Answer} from './answer';
 
-export class SurveyAnswer {
+export class SurveyResponse {
   answers: Answer[];
 }
