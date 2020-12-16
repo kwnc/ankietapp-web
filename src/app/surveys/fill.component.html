@@ -41,7 +41,7 @@
             <div *ngIf="question.type === 'singleChoice'">
               <div *ngFor="let choice of question.choices">
                 <div class="form-check">
-                  <input type="radio" class="form-check-input with-gap" id="radioGap1" name="groupOfRadioGap" mdbInput>
+                  <input matInput type="radio" class="form-check-input with-gap" id="radioGap1" name="groupOfRadioGap">
                   <label class="form-check-label" for="radioGap1">{{choice.value}}</label>
                 </div>
               </div>
