@@ -45,6 +45,7 @@ export class AuthService {
   }
 
   public logout(): void {
+    localStorage.clear();
     this.JWT_TOKEN = null;
     this.loggedUser = null;
     this.router.navigate(['/account/login']);

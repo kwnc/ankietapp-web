@@ -14,4 +14,8 @@ export class AppComponent {
     logout() {
         this.accountService.logout();
     }
+
+    isAdmin(): boolean {
+      return this.user.isAdmin;
+    }
 }
