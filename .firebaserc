@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "ankietapp-711c3": {
+      "hosting": {
+        "angular-registration-login-example": [
+          "ankietapp-711c3"
+        ]
+      }
+    }
+  }
+}
